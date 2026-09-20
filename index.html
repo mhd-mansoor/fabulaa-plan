@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Fabulaa 2.0 — Product Proposal</title>
+<style>
+  /* ─── Reset & Base ───────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 15px; scroll-behavior: smooth; }
+  body {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: #f4f6fb;
+    color: #1a1a2e;
+    line-height: 1.7;
+  }
+
+  /* ─── Color Palette ──────────────────────────────────── */
+  :root {
+    --blue:    #1e6ef7;
+    --blue-dk: #0d4fcb;
+    --teal:    #00c2b2;
+    --purple:  #7b5cf0;
+    --orange:  #f97316;
+    --green:   #22c55e;
+    --red:     #ef4444;
+    --yellow:  #f59e0b;
+    --bg-card: #ffffff;
+    --border:  #e2e8f0;
+    --text-sm: #64748b;
+  }
+
+  /* ─── Page wrapper ───────────────────────────────────── */
+  .page { max-width: 1080px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* ─── HERO HEADER ────────────────────────────────────── */
+  .hero {
+    background: linear-gradient(135deg, #0d4fcb 0%, #1e6ef7 45%, #00c2b2 100%);
+    color: #fff;
+    padding: 70px 60px 60px;
+    border-radius: 0 0 40px 40px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 56px;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 320px; height: 320px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 50%;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -40px;
+    width: 260px; height: 260px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 50%;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 10px;
+    position: relative; z-index:1;
+  }
+  .hero h1 span { color: #ffd43b; }
+  .hero-sub {
+    font-size: 19px;
+    opacity: 0.88;
+    margin-bottom: 32px;
+    max-width: 560px;
+    position: relative; z-index:1;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    position: relative; z-index:1;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat-val {
+    font-size: 32px;
+    font-weight: 800;
+    color: #ffd43b;
+    display: block;
+  }
+  .hero-stat-label { font-size: 12px; opacity: 0.8; letter-spacing: 0.5px; }
+  .hero-date {
+    position: absolute;
+    top: 28px; right: 48px;
+    font-size: 12px;
+    opacity: 0.7;
+    font-style: italic;
+  }
+
+  /* ─── Section Headings ───────────────────────────────── */
+  .section { margin-bottom: 60px; }
+  .section-label {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 6px;
+  }
+  .section-title span { color: var(--blue); }
+  .section-desc {
+    color: var(--text-sm);
+    font-size: 15px;
+    max-width: 680px;
+    margin-bottom: 32px;
+  }
+  hr.divider {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 56px 0;
+  }
+
+  /* ─── Cards ──────────────────────────────────────────── */
+  .card {
+    background: var(--bg-card);
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    padding: 28px 30px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  }
+
+  /* ─── Executive Summary ──────────────────────────────── */
+  .summary-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  .summary-card {
+    border-radius: 18px;
+    padding: 28px 24px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .summary-card::after {
+    content: '';
+    position: absolute;
+    bottom: -30px; right: -30px;
+    width: 120px; height: 120px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 50%;
+  }
+  .summary-card.problem  { background: linear-gradient(135deg, #ef4444, #f97316); }
+  .summary-card.oppty   { background: linear-gradient(135deg, #7b5cf0, #1e6ef7); }
+  .summary-card.model   { background: linear-gradient(135deg, #00b09b, #22c55e); }
+  .summary-icon { font-size: 36px; margin-bottom: 14px; display: block; }
+  .summary-card h3 { font-size: 15px; font-weight: 800; margin-bottom: 8px; letter-spacing: 0.3px; }
+  .summary-card p { font-size: 13px; opacity: 0.9; line-height: 1.6; }
+
+  /* ─── Comparison Table ───────────────────────────────── */
+  .table-wrap { overflow-x: auto; border-radius: 16px; box-shadow: 0 2px 14px rgba(0,0,0,0.07); }
+  table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 16px; overflow: hidden; }
+  thead th {
+    background: linear-gradient(135deg, #0d4fcb, #1e6ef7);
+    color: #fff;
+    padding: 14px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: left;
+    letter-spacing: 0.3px;
+  }
+  thead th:first-child { border-radius: 16px 0 0 0; }
+  thead th:last-child  { border-radius: 0 16px 0 0; }
+  tbody tr:nth-child(even) { background: #f8fafc; }
+  tbody tr:hover { background: #eff6ff; }
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #f0f4f8;
+    font-size: 13.5px;
+    vertical-align: middle;
+  }
+  td:first-child { font-weight: 600; color: #334155; }
+  .badge-yes { color: #16a34a; font-weight: 700; }
+  .badge-no  { color: #dc2626; font-weight: 700; }
+  .badge-warn { color: #d97706; font-weight: 700; }
+  .badge-star { color: var(--blue); font-weight: 700; }
+
+  /* ─── Feature Cards Grid ─────────────────────────────── */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .feat-card {
+    background: #fff;
+    border-radius: 18px;
+    border: 1.5px solid var(--border);
+    padding: 22px 20px 18px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .feat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(30,110,247,0.12); }
+  .feat-card-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .feat-icon {
+    width: 46px; height: 46px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .feat-card h4 { font-size: 14px; font-weight: 800; color: #0f172a; }
+  .feat-card p  { font-size: 12.5px; color: var(--text-sm); line-height: 1.6; }
+  .feat-tier {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 50px;
+    margin-top: 10px;
+    letter-spacing: 0.5px;
+  }
+  .tier-free   { background: #dcfce7; color: #166534; }
+  .tier-pro    { background: #ede9fe; color: #5b21b6; }
+  .tier-unique { background: #fef9c3; color: #854d0e; }
+
+  /* ─── Tier colours for icon bg ──────────────────────── */
+  .ic-blue   { background: #dbeafe; }
+  .ic-teal   { background: #ccfbf1; }
+  .ic-purple { background: #ede9fe; }
+  .ic-orange { background: #ffedd5; }
+  .ic-green  { background: #dcfce7; }
+  .ic-yellow { background: #fef9c3; }
+  .ic-red    { background: #fee2e2; }
+  .ic-pink   { background: #fce7f3; }
+
+  /* ─── Architecture Box ───────────────────────────────── */
+  .arch-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  .arch-card {
+    background: #fff;
+    border-radius: 18px;
+    border: 2px solid transparent;
+    padding: 26px 22px;
+    position: relative;
+  }
+  .arch-card.free   { border-color: #22c55e; }
+  .arch-card.family { border-color: #1e6ef7; }
+  .arch-card.pro    { border-color: #7b5cf0; }
+  .arch-tag {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 50px;
+    margin-bottom: 14px;
+    display: inline-block;
+  }
+  .arch-card.free .arch-tag   { background: #dcfce7; color: #166534; }
+  .arch-card.family .arch-tag { background: #dbeafe; color: #1e40af; }
+  .arch-card.pro .arch-tag    { background: #ede9fe; color: #5b21b6; }
+  .arch-card h3 { font-size: 16px; font-weight: 800; margin-bottom: 12px; }
+  .arch-list { list-style: none; padding: 0; }
+  .arch-list li {
+    font-size: 13px;
+    color: var(--text-sm);
+    padding: 4px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .arch-list li::before { content: '✓'; font-weight: 800; color: #22c55e; }
+
+  /* ─── Roadmap Timeline ───────────────────────────────── */
+  .timeline { position: relative; padding-left: 32px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 10px; top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, #1e6ef7, #7b5cf0, #00c2b2, #22c55e);
+    border-radius: 2px;
+  }
+  .tl-item {
+    position: relative;
+    margin-bottom: 32px;
+    background: #fff;
+    border-radius: 16px;
+    padding: 22px 24px;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -26px; top: 26px;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 2px var(--border);
+  }
+  .tl-item.p1::before { background: #1e6ef7; }
+  .tl-item.p2::before { background: #7b5cf0; }
+  .tl-item.p3::before { background: #00c2b2; }
+  .tl-item.p4::before { background: #22c55e; }
+  .tl-phase {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .tl-item.p1 .tl-phase { color: #1e6ef7; }
+  .tl-item.p2 .tl-phase { color: #7b5cf0; }
+  .tl-item.p3 .tl-phase { color: #00c2b2; }
+  .tl-item.p4 .tl-phase { color: #22c55e; }
+  .tl-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 10px; }
+  .tl-header h3 { font-size: 17px; font-weight: 800; }
+  .tl-months {
+    font-size: 12px;
+    color: #fff;
+    padding: 3px 12px;
+    border-radius: 50px;
+    font-weight: 700;
+  }
+  .tl-item.p1 .tl-months { background: #1e6ef7; }
+  .tl-item.p2 .tl-months { background: #7b5cf0; }
+  .tl-item.p3 .tl-months { background: #00c2b2; }
+  .tl-item.p4 .tl-months { background: #22c55e; }
+  .tl-item p { font-size: 13px; color: var(--text-sm); margin-bottom: 12px; }
+  .tl-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 50px;
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+  }
+
+  /* ─── Business Model ─────────────────────────────────── */
+  .biz-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .biz-card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 26px 24px;
+    border: 1px solid var(--border);
+  }
+  .biz-card-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .biz-icon {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+  }
+  .biz-card h3 { font-size: 15px; font-weight: 800; }
+  .biz-card .price { font-size: 22px; font-weight: 800; color: var(--blue); }
+  .biz-card p { font-size: 13px; color: var(--text-sm); }
+
+  /* ─── Comparison Matrix ──────────────────────────────── */
+  .matrix-wrap { overflow-x: auto; }
+  .matrix-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 16px; overflow: hidden; }
+  .matrix-table th {
+    padding: 13px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+  }
+  .matrix-table th:first-child { text-align: left; }
+  .matrix-table th.fabulaa {
+    background: linear-gradient(135deg, #1e6ef7, #00c2b2);
+    color: #fff;
+    border-radius: 0;
+  }
+  .matrix-table th.comp { background: #f1f5f9; color: #64748b; }
+  .matrix-table td {
+    padding: 11px 14px;
+    text-align: center;
+    font-size: 13px;
+    border-bottom: 1px solid #f0f4f8;
+  }
+  .matrix-table td:first-child { text-align: left; font-weight: 600; font-size: 13px; }
+  .matrix-table tbody tr:nth-child(even) { background: #f8fafc; }
+  .matrix-table .fabulaa-col { background: #eff6ff !important; font-weight: 700; }
+
+  /* ─── Questions Section ──────────────────────────────── */
+  .questions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .q-card {
+    background: #fff;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    padding: 18px 20px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .q-num {
+    width: 34px; height: 34px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #1e6ef7, #00c2b2);
+    color: #fff;
+    font-weight: 800;
+    font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .q-card p { font-size: 13px; color: #334155; line-height: 1.6; }
+
+  /* ─── CTA / Footer ───────────────────────────────────── */
+  .cta-bar {
+    background: linear-gradient(135deg, #0d4fcb 0%, #1e6ef7 50%, #00c2b2 100%);
+    border-radius: 24px;
+    padding: 50px 48px;
+    color: #fff;
+    text-align: center;
+    margin-top: 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-bar::before {
+    content: '💬';
+    position: absolute;
+    font-size: 180px;
+    opacity: 0.05;
+    top: -20px;
+    right: -20px;
+  }
+  .cta-bar h2 { font-size: 30px; font-weight: 800; margin-bottom: 10px; }
+  .cta-bar p  { font-size: 16px; opacity: 0.88; max-width: 520px; margin: 0 auto 28px; }
+  .cta-btn {
+    display: inline-block;
+    background: #fff;
+    color: var(--blue-dk);
+    font-weight: 800;
+    font-size: 14px;
+    padding: 14px 36px;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.15);
+    letter-spacing: 0.4px;
+  }
+  .footer-info {
+    text-align: center;
+    margin-top: 32px;
+    font-size: 12px;
+    color: var(--text-sm);
+  }
+
+  /* ─── Tech Stack Pills ───────────────────────────────── */
+  .tech-grid { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+  .tech-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 50px;
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+  }
+  .tech-pill .dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ─── Highlight Box ──────────────────────────────────── */
+  .highlight-box {
+    border-left: 4px solid var(--blue);
+    background: #eff6ff;
+    border-radius: 0 14px 14px 0;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+  }
+  .highlight-box.green { border-color: #22c55e; background: #f0fdf4; }
+  .highlight-box.orange { border-color: #f97316; background: #fff7ed; }
+  .highlight-box h4 { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+  .highlight-box p  { font-size: 13px; color: var(--text-sm); }
+
+  /* ─── Free vs Pro Table ──────────────────────────────── */
+  .fvp-table th { text-align: center; padding: 12px 16px; font-size: 13px; }
+  .fvp-table th.free-h { background: #dcfce7; color: #166534; }
+  .fvp-table th.pro-h  { background: #ede9fe; color: #5b21b6; }
+  .fvp-table td { text-align: center; font-size: 13px; }
+  .fvp-table td:first-child { text-align: left; font-weight: 600; }
+
+  /* ─── Print / PDF ────────────────────────────────────── */
+  @media print {
+    body { background: #fff; font-size: 12px; }
+    .page { padding: 0; }
+    .hero { border-radius: 0; margin-bottom: 36px; padding: 44px 40px 40px; }
+    .feat-card:hover { transform: none; box-shadow: none; }
+    .section { page-break-inside: avoid; }
+    .tl-item { page-break-inside: avoid; }
+    @page { margin: 16mm 14mm; size: A4; }
+  }
+  @media (max-width: 768px) {
+    .features-grid, .arch-grid, .summary-grid, .biz-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 30px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════ HERO ═══ -->
+<div class="hero">
+  <div class="hero-date">📅 Prepared: September 2026</div>
+  <div class="hero-badge">🏆 Official Product Proposal</div>
+  <h1>Fabulaa <span>2.0</span><br/>Product Plan</h1>
+  <p class="hero-sub">The World's Most Accessible Free AAC Platform — Building the future of inclusive communication technology</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="hero-stat-val">20+</span><span class="hero-stat-label">New Features</span></div>
+    <div class="hero-stat"><span class="hero-stat-val">10K+</span><span class="hero-stat-label">Free Symbols</span></div>
+    <div class="hero-stat"><span class="hero-stat-val">20+</span><span class="hero-stat-label">Languages</span></div>
+    <div class="hero-stat"><span class="hero-stat-val">24mo</span><span class="hero-stat-label">Roadmap</span></div>
+    <div class="hero-stat"><span class="hero-stat-val">FREE</span><span class="hero-stat-label">Core App</span></div>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- ═════════════════════════════════════════ EXECUTIVE SUMMARY ═══ -->
+<div class="section">
+  <div class="section-label">Overview</div>
+  <div class="section-title">Executive <span>Summary</span></div>
+  <p class="section-desc">Why now, and why Fabulaa is perfectly positioned to disrupt the $8B global AAC market.</p>
+
+  <div class="summary-grid">
+    <div class="summary-card problem">
+      <span class="summary-icon">🚨</span>
+      <h3>The Problem</h3>
+      <p>Premium AAC apps like Proloquo2Go ($249.99), Tobii Dynavox ($25/mo+), and CoughDrop ($15/mo) price out millions of families — especially in developing regions — who need them the most.</p>
+    </div>
+    <div class="summary-card oppty">
+      <span class="summary-icon">💡</span>
+      <h3>The Opportunity</h3>
+      <p>Fabulaa already has the right mission — free & accessible. Version 2.0 will be a full-stack, AI-powered AAC platform that matches or exceeds premium competitors while staying free or affordable.</p>
+    </div>
+    <div class="summary-card model">
+      <span class="summary-icon">🚀</span>
+      <h3>The Model</h3>
+      <p>Free core app for all users + optional Fabulaa Pro subscription for advanced AI features + B2B partnerships with schools and clinics for sustainable long-term revenue.</p>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- ═══════════════════════════════════════════════ GAPS ══════ -->
+<div class="section">
+  <div class="section-label">Competitive Analysis</div>
+  <div class="section-title">Where Fabulaa Stands <span>Today</span></div>
+  <p class="section-desc">An honest look at what Fabulaa currently offers vs. the premium competition — and the gap we will close.</p>
+
+  <div class="highlight-box orange">
+    <h4>⚠️ Critical Gap</h4>
+    <p>Fabulaa's current app only offers 4 basic features. Competitors have 20–40+ features including AI prediction, 27,000 symbols, progress tracking, and therapist portals — justifying their high price. We can build all of this for free.</p>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Proloquo2Go ($249)</th>
+          <th>TD Snap ($25/mo)</th>
+          <th>CoughDrop ($15/mo)</th>
+          <th>Fabulaa Current</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Symbol Vocabulary</td><td class="badge-yes">✅ 27,000+</td><td class="badge-yes">✅ Large</td><td class="badge-yes">✅ Large</td><td class="badge-no">❌ Limited</td></tr>
+        <tr><td>AI Word Prediction</td><td class="badge-yes">✅</td><td class="badge-yes">✅</td><td class="badge-yes">✅</td><td class="badge-no">❌ None</td></tr>
+        <tr><td>Multiple User Profiles</td><td class="badge-yes">✅</td><td class="badge-yes">✅</td><td class="badge-yes">✅</td><td class="badge-no">❌ None</td></tr>
+        <tr><td>Therapist / Parent Portal</td><td class="badge-yes">✅</td><td class="badge-yes">✅</td><td class="badge-yes">✅</td><td class="badge-no">❌ None</td></tr>
+        <tr><td>Full Offline Mode</td><td class="badge-yes">✅</td><td class="badge-yes">✅</td><td class="badge-yes">✅</td><td class="badge-warn">⚠️ Partial</td></tr>
+        <tr><td>Switch / Eye Gaze Access</td><td class="badge-warn">⚠️</td><td class="badge-yes">✅</td><td class="badge-no">❌</td><td class="badge-no">❌ None</td></tr>
+        <tr><td>Progress Analytics</td><td class="badge-yes">✅</td><td class="badge-yes">✅</td><td class="badge-yes">✅</td><td class="badge-no">❌ None</td></tr>
+        <tr><td>Visual Scene Display</td><td class="badge-yes">✅</td><td class="badge-yes">✅</td><td class="badge-yes">✅</td><td class="badge-no">❌ None</td></tr>
+        <tr><td>10+ Languages</td><td class="badge-yes">✅</td><td class="badge-yes">✅</td><td class="badge-yes">✅</td><td class="badge-no">❌ Only 2</td></tr>
+        <tr><td>Cloud Sync</td><td class="badge-yes">✅</td><td class="badge-yes">✅</td><td class="badge-yes">✅</td><td class="badge-no">❌ None</td></tr>
+        <tr><td>Android Support</td><td class="badge-no">❌ iOS only</td><td class="badge-no">❌ iOS only</td><td class="badge-yes">✅</td><td class="badge-yes">✅</td></tr>
+        <tr><td><strong>Price</strong></td><td class="badge-no">$249.99</td><td class="badge-no">$25/month</td><td class="badge-no">$15/month</td><td class="badge-yes"><strong>FREE</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- ════════════════════════════════════════ ARCHITECTURE ════════ -->
+<div class="section">
+  <div class="section-label">Platform Strategy</div>
+  <div class="section-title">Recommended <span>Architecture</span></div>
+  <p class="section-desc">One unified platform with multiple user modes — the same approach that makes Google Maps serve walkers, drivers, and cyclists perfectly in a single app.</p>
+
+  <div class="highlight-box">
+    <h4>💡 Strategic Recommendation: One Unified App, Not Multiple</h4>
+    <p>Users with disabilities benefit enormously from consistency. One app with layered modes maximises user retention, simplifies maintenance, and drives stronger App Store ratings — outperforming fragmented multi-app strategies every time.</p>
+  </div>
+
+  <div class="arch-grid">
+    <div class="arch-card free">
+      <span class="arch-tag">🆓 Free Core</span>
+      <h3>Everyone's Foundation</h3>
+      <ul class="arch-list">
+        <li>AAC Communication Board</li>
+        <li>5,000+ Free Symbols (ARASAAC)</li>
+        <li>Phrase Library</li>
+        <li>Text-to-Speech (8 languages)</li>
+        <li>Basic Customization</li>
+        <li>Full Offline Mode</li>
+        <li>Emergency Medical Board</li>
+        <li>2 User Profiles</li>
+      </ul>
+    </div>
+    <div class="arch-card family">
+      <span class="arch-tag">👨‍👩‍👧 Family Portal</span>
+      <h3>Free Web Companion</h3>
+      <ul class="arch-list">
+        <li>Browser-based board editing</li>
+        <li>Progress monitoring</li>
+        <li>Cloud sync across devices</li>
+        <li>Therapist collaboration tools</li>
+        <li>Shareable board library</li>
+        <li>Accessible from any device</li>
+      </ul>
+    </div>
+    <div class="arch-card pro">
+      <span class="arch-tag">🏥 Pro / Institutional</span>
+      <h3>Paid Tier for Scale</h3>
+      <ul class="arch-list">
+        <li>Unlimited AI word prediction</li>
+        <li>AI sentence builder (Gemini)</li>
+        <li>Full analytics dashboard</li>
+        <li>20+ languages + premium voices</li>
+        <li>Therapist dashboard</li>
+        <li>White-label for clinics</li>
+        <li>Priority support</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- ═══════════════════════════════════ 20 NEW FEATURES ══════════ -->
+<div class="section">
+  <div class="section-label">Feature Plan</div>
+  <div class="section-title">20 New Features <span>to Build</span></div>
+  <p class="section-desc">Organised into three tiers: Free core features, advanced Free+Pro, and AI-powered differentiators that no competitor offers today.</p>
+
+  <!-- TIER 1 -->
+  <h3 style="font-size:16px;font-weight:800;color:#1e6ef7;margin:0 0 14px;padding:10px 16px;background:#eff6ff;border-radius:10px;display:inline-block;">🔵 TIER 1 — Core Features (Free)</h3>
+  <div class="features-grid" style="margin-bottom:32px;">
+
+    <div class="feat-card">
+      <div class="feat-card-top">
+        <div class="feat-icon ic-blue">🧩</div>
+        <h4>Robust AAC Symbol Board</h4>
+      </div>
+      <p>10,000+ free ARASAAC symbols, core word vocabulary, flexible 2×2 to 10×10 grids, sentence strip builder with motor-planning consistent layouts.</p>
+      <span class="feat-tier tier-free">FREE</span>
+      <span class="feat-tier tier-unique">🔥 Critical</span>
+    </div>
+
+    <div class="feat-card">
+      <div class="feat-card-top">
+        <div class="feat-icon ic-teal">🔊</div>
+        <h4>High-Quality TTS Voices</h4>
+      </div>
+      <p>Natural voices via Google TTS / Azure. 8 languages at launch expanding to 20+. Male, female, child voice options. Rate & pitch control. Custom recorded voice support.</p>
+      <span class="feat-tier tier-free">FREE</span>
+    </div>
+
+    <div class="feat-card">
+      <div class="feat-card-top">
+        <div class="feat-icon ic-orange">🖼️</div>
+        <h4>Visual Scene Display</h4>
+      </div>
+      <p>Photo-based communication boards — tap regions of real-world photos to speak. Users create their own scenes with personal photos. Proven highly effective for children.</p>
+      <span class="feat-tier tier-free">FREE</span>
+    </div>
+
+    <div class="feat-card">
+      <div class="feat-card-top">
+        <div class="feat-icon ic-green">💬</div>
+        <h4>Smart Phrase & Quick Chat</h4>
+      </div>
+      <p>Upgraded phrase library with time-of-day context awareness, one-tap most-used phrases, and an always-accessible emergency phrase strip that cannot be hidden.</p>
+      <span class="feat-tier tier-free">FREE</span>
+    </div>
+
+    <div class="feat-card">
+      <div class="feat-card-top">
+        <div class="feat-icon ic-pink">✏️</div>
+        <h4>Enhanced AI Scribble</h4>
+      </div>
+      <p>Draw → AI image recognition suggests matching AAC symbol. Handwriting-to-text conversion for users who can write. Share drawings with caregivers instantly.</p>
+      <span class="feat-tier tier-free">FREE</span>
+    </div>
+
+    <div class="feat-card">
+      <div class="feat-card-top">
+        <div class="feat-icon ic-yellow">📵</div>
+        <h4>Full Offline Mode</h4>
+      </div>
+      <p>100% offline functionality for core communication. All symbols, phrases, and voices cached locally. Syncs automatically when back online. Critical for low-connectivity regions.</p>
+      <span class="feat-tier tier-free">FREE</span>
+      <span class="feat-tier tier-unique">🌍 Global Impact</span>
+    </div>
+
+  </div>
+
+  <!-- TIER 2 -->
+  <h3 style="font-size:16px;font-weight:800;color:#7b5cf0;margin:0 0 14px;padding:10px 16px;background:#f5f3ff;border-radius:10px;display:inline-block;">🟡 TIER 2 — Advanced Features (Free + Pro)</h3>
+  <div class="features-grid" style="margin-bottom:32px;">
+
+    <div class="feat-card">
+      <div class="feat-card-top">
+        <div class="feat-icon ic-purple">🤖</div>
+        <h4>AI Word Prediction</h4>
+      </div>
+      <p>On-device ML predicts next likely symbol as user communicates. Learns from individual usage patterns. Reduces taps by up to 60%. Basic (free) vs. self-learning engine (Pro).</p>
+      <span class="feat-tier tier-free">FREE (Basic)</span>
+      <span class="feat-tier tier-pro">PRO (Advanced)</span>
+    </div>
+
+    <div class="feat-card">
+      <div class="feat-card-top">
+        <div class="feat-icon ic-blue">👤</div>
+        <h4>Multi-User Profiles</h4>
+      </div>
+      <p>Each patient/family member gets their own vocabulary, grid size, and preferences. Caregiver admin profile manages all users. Free: 2 profiles. Pro: unlimited.</p>
+      <span class="feat-tier tier-free">FREE (2)</span>
+      <span class="feat-tier tier-pro">PRO (Unlimited)</span>
+    </div>
+
+    <div class="feat-card">
+      <div class="feat-card-top">
+        <div class="feat-icon ic-teal">🌐</div>
+        <h4>Family & Therapist Portal</h4>
+      </div>
+      <p>Browser-based dashboard for parents and speech-language pathologists. Edit boards remotely, view usage reports, share vocabulary sets. Free: read-only. Pro: full editing.</p>
+      <span class="feat-tier tier-free">FREE (Read)</span>
+      <span class="feat-tier tier-pro">PRO (Full Edit)</span>
+    </div>
+
+    <div class="feat-card">
+      <div class="feat-card-top">
+        <div class="feat-icon ic-green">📊</div>
+        <h4>Progress Tracking</h4>
+      </div>
+      <p>Track word usage frequency, daily session count, communication complexity over time. Visual charts. Exportable IEP reports for schools. Milestone celebrations to motivate children.</p>
+      <span class="feat-tier tier-pro">PRO Feature</span>
+    </div>
+
+    <div class="feat-card">
+      <div class="feat-card-top">
+        <div class="feat-icon ic-orange">🎨</div>
+        <h4>Custom Symbol Creator</h4>
+      </div>
+      <p>Upload photos, draw symbols, and AI auto-generates labels. Community library for sharing custom symbols with other Fabulaa users. SLP-verified symbols marked with badges.</p>
+      <span class="feat-tier tier-free">FREE</span>
+    </div>
+
+    <div class="feat-card">
+      <div class="feat-card-top">
+        <div class="feat-icon ic-red">♿</div>
+        <h4>Accessibility & Switch Access</h4>
+      </div>
+      <p>Single/two-switch scanning, dwell/gaze control via front camera, adjustable button sizes, high contrast mode, auditory scanning. Full iOS Switch Control & Android A11y support.</p>
+      <span class="feat-tier tier-free">FREE</span>
+      <span class="feat-tier tier-unique">♿ Inclusive</span>
+    </div>
+
+  </div>
+
+  <!-- TIER 3 -->
+  <h3 style="font-size:16px;font-weight:800;color:#d97706;margin:0 0 14px;padding:10px 16px;background:#fffbeb;border-radius:10px;display:inline-block;">🟢 TIER 3 — AI-Powered Differentiators (Unique to Fabulaa)</h3>
+  <div class="features-grid">
+
+    <div class="feat-card" style="border-color:#fbbf24;">
+      <div class="feat-card-top">
+        <div class="feat-icon ic-yellow">🧠</div>
+        <h4>AI Communication Assistant</h4>
+      </div>
+      <p>User taps [I] + [want] + [pizza] → AI expands to "I would like to have pizza, please." Powered by Gemini API. Context-aware suggestions. No competitor offers this today.</p>
+      <span class="feat-tier tier-pro">PRO</span>
+      <span class="feat-tier tier-unique">⭐ Unique Feature</span>
+    </div>
+
+    <div class="feat-card" style="border-color:#fbbf24;">
+      <div class="feat-card-top">
+        <div class="feat-icon ic-green">🎮</div>
+        <h4>Gamified Learning Mode</h4>
+      </div>
+      <p>Interactive games teaching AAC vocabulary. Match symbols to pictures, build sentences, earn badges and streaks. Designed for children (3+), adaptable for adults. SLP-assignable goals.</p>
+      <span class="feat-tier tier-free">FREE</span>
+      <span class="feat-tier tier-unique">⭐ Unique Feature</span>
+    </div>
+
+    <div class="feat-card" style="border-color:#fbbf24;">
+      <div class="feat-card-top">
+        <div class="feat-icon ic-purple">📖</div>
+        <h4>Visual Story Builder</h4>
+      </div>
+      <p>Create visual social stories — step-by-step picture sequences for doctor visits, daily routines, social skills. Record narration. Library of pre-made stories. Share with family/therapists.</p>
+      <span class="feat-tier tier-free">FREE</span>
+    </div>
+
+    <div class="feat-card" style="border-color:#fbbf24;">
+      <div class="feat-card-top">
+        <div class="feat-icon ic-blue">🎙️</div>
+        <h4>Voice Banking</h4>
+      </div>
+      <p>Users at risk of losing their voice (ALS, cancer) record their voice while still able. App creates a personalised TTS voice that sounds exactly like them. Standalone apps charge $500+ for this.</p>
+      <span class="feat-tier tier-pro">PRO</span>
+      <span class="feat-tier tier-unique">⭐ Rare Feature</span>
+    </div>
+
+    <div class="feat-card" style="border-color:#fbbf24;">
+      <div class="feat-card-top">
+        <div class="feat-icon ic-teal">🚨</div>
+        <h4>Medical Emergency Board</h4>
+      </div>
+      <p>Always-accessible pre-loaded board: body pain diagram, pain scale 1-10, emergency phrases ("Call 911", "I am allergic to…"), full offline, accessible from lock screen shortcut.</p>
+      <span class="feat-tier tier-free">FREE</span>
+      <span class="feat-tier tier-unique">⭐ Life-Saving</span>
+    </div>
+
+    <div class="feat-card" style="border-color:#fbbf24;">
+      <div class="feat-card-top">
+        <div class="feat-icon ic-orange">🏠</div>
+        <h4>Smart Home Integration</h4>
+      </div>
+      <p>Control Google Home / Amazon Alexa devices through the AAC board. Control lights, TV, thermostat with symbol taps. Tobii Dynavox charges $3,000+ hardware for this capability.</p>
+      <span class="feat-tier tier-pro">PRO</span>
+      <span class="feat-tier tier-unique">⭐ Unique Feature</span>
+    </div>
+
+    <div class="feat-card" style="border-color:#fbbf24;">
+      <div class="feat-card-top">
+        <div class="feat-icon ic-pink">🤝</div>
+        <h4>Communication Partner Mode</h4>
+      </div>
+      <p>Dual-screen mode: AAC user mode + conversation partner mode. Partner types responses that display visually. Phrase suggestions for partners. Makes natural two-way conversation easy.</p>
+      <span class="feat-tier tier-free">FREE</span>
+      <span class="feat-tier tier-unique">⭐ Unique Feature</span>
+    </div>
+
+    <div class="feat-card" style="border-color:#fbbf24;">
+      <div class="feat-card-top">
+        <div class="feat-icon ic-blue">🌍</div>
+        <h4>Community Vocabulary Library</h4>
+      </div>
+      <p>Therapist & parent-created boards you can download. Organised by age group, condition, language, and context (school, hospital, home). SLP-verified boards carry an expert badge.</p>
+      <span class="feat-tier tier-free">FREE</span>
+    </div>
+
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- ═══════════════════════════════════════ ROADMAP ══════════════ -->
+<div class="section">
+  <div class="section-label">Development Timeline</div>
+  <div class="section-title">24-Month <span>Roadmap</span></div>
+  <p class="section-desc">A realistic, phased approach to building the world's best free AAC platform — from solid foundation to global scale.</p>
+
+  <div class="timeline">
+    <div class="tl-item p1">
+      <div class="tl-phase">Phase 1</div>
+      <div class="tl-header">
+        <h3>🏗️ Foundation — Rock-Solid Core AAC</h3>
+        <span class="tl-months">Months 1 – 4</span>
+      </div>
+      <p>Build the core AAC experience that already beats the current Fabulaa app. Launch publicly on Google Play and App Store. Establish the brand as a serious AAC platform.</p>
+      <div class="tl-chips">
+        <span class="chip">Complete UI/UX redesign</span>
+        <span class="chip">ARASAAC 12,000 symbols</span>
+        <span class="chip">Core word vocabulary</span>
+        <span class="chip">Flexible grid sizes</span>
+        <span class="chip">TTS (8 languages)</span>
+        <span class="chip">Sentence strip builder</span>
+        <span class="chip">2 user profiles</span>
+        <span class="chip">Full offline mode</span>
+        <span class="chip">Emergency board</span>
+        <span class="chip">Flutter iOS + Android</span>
+      </div>
+    </div>
+
+    <div class="tl-item p2">
+      <div class="tl-phase">Phase 2</div>
+      <div class="tl-header">
+        <h3>🧠 Intelligence — Match Premium Competitors</h3>
+        <span class="tl-months">Months 5 – 8</span>
+      </div>
+      <p>Add the AI, collaboration, and accessibility features that make Fabulaa comparable to Proloquo2Go — and launch the Pro subscription to drive revenue.</p>
+      <div class="tl-chips">
+        <span class="chip">AI word prediction</span>
+        <span class="chip">Visual Scene Display</span>
+        <span class="chip">Custom symbol creator</span>
+        <span class="chip">Family/Therapist web portal</span>
+        <span class="chip">Progress analytics</span>
+        <span class="chip">Community symbol library</span>
+        <span class="chip">Switch access support</span>
+        <span class="chip">High contrast themes</span>
+        <span class="chip">🔥 Fabulaa Pro launch</span>
+      </div>
+    </div>
+
+    <div class="tl-item p3">
+      <div class="tl-phase">Phase 3</div>
+      <div class="tl-header">
+        <h3>⭐ AI Superpowers — Features No Competitor Has</h3>
+        <span class="tl-months">Months 9 – 14</span>
+      </div>
+      <p>Deploy the differentiating AI features and B2B institutional offering. Establish Fabulaa as the most technologically advanced free AAC platform in the world.</p>
+      <div class="tl-chips">
+        <span class="chip">AI sentence builder (Gemini)</span>
+        <span class="chip">Gamified learning mode</span>
+        <span class="chip">Visual story builder</span>
+        <span class="chip">Voice banking</span>
+        <span class="chip">Communication partner mode</span>
+        <span class="chip">Smart home integration</span>
+        <span class="chip">B2B school/clinic portal</span>
+        <span class="chip">20+ language support</span>
+        <span class="chip">Web AAC app (Chromebook)</span>
+      </div>
+    </div>
+
+    <div class="tl-item p4">
+      <div class="tl-phase">Phase 4</div>
+      <div class="tl-header">
+        <h3>🌏 Global Scale & Sustainable Impact</h3>
+        <span class="tl-months">Months 15 – 24</span>
+      </div>
+      <p>Expand globally, pursue partnerships with international health organisations, open the developer API, and secure grant funding to sustain the free mission long-term.</p>
+      <div class="tl-chips">
+        <span class="chip">South Asia localisation</span>
+        <span class="chip">Southeast Asia languages</span>
+        <span class="chip">African language support</span>
+        <span class="chip">UNICEF / WHO partnerships</span>
+        <span class="chip">Developer API</span>
+        <span class="chip">Research partnerships</span>
+        <span class="chip">Google.org grant</span>
+        <span class="chip">Open-source contributions</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- ═══════════════════════════════════ BUSINESS MODEL ══════════ -->
+<div class="section">
+  <div class="section-label">Revenue Strategy</div>
+  <div class="section-title">Sustainable Business <span>Model</span></div>
+  <p class="section-desc">Free for users, sustainable for the business — a freemium model that funds the mission rather than compromising it.</p>
+
+  <div class="biz-grid">
+    <div class="biz-card">
+      <div class="biz-card-head">
+        <div class="biz-icon ic-blue">💳</div>
+        <div>
+          <h3>Fabulaa Pro — Individual</h3>
+          <div class="price">$4.99<span style="font-size:14px;color:#64748b;font-weight:500">/month</span> &nbsp; or &nbsp; $39.99<span style="font-size:14px;color:#64748b;font-weight:500">/year</span></div>
+        </div>
+      </div>
+      <p>AI features, unlimited profiles, full analytics, 20+ languages, premium voices, cloud backup, and priority support for individuals and families.</p>
+    </div>
+    <div class="biz-card">
+      <div class="biz-card-head">
+        <div class="biz-icon ic-purple">🏫</div>
+        <div>
+          <h3>Fabulaa for Schools & Clinics</h3>
+          <div class="price">$299 – $999<span style="font-size:14px;color:#64748b;font-weight:500">/year</span></div>
+        </div>
+      </div>
+      <p>Therapist dashboard, class management, progress reports, white-label option, dedicated support, SLP training resources, and bulk device licensing.</p>
+    </div>
+    <div class="biz-card">
+      <div class="biz-card-head">
+        <div class="biz-icon ic-green">🏆</div>
+        <div>
+          <h3>Grants & Partnerships</h3>
+          <div class="price" style="color:#22c55e;">Non-Dilutive</div>
+        </div>
+      </div>
+      <p>Apply for Google.org, UNICEF Innovation Fund, and government disability tech grants. Partner with hospitals and NGOs who can fund access for their communities.</p>
+    </div>
+    <div class="biz-card">
+      <div class="biz-card-head">
+        <div class="biz-icon ic-orange">🔌</div>
+        <div>
+          <h3>Developer API</h3>
+          <div class="price" style="color:#f97316;">Revenue Share</div>
+        </div>
+      </div>
+      <p>Allow third-party developers to build on Fabulaa's symbol and voice API. Revenue share model. Opens new ecosystem opportunities and increases platform stickiness.</p>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- ════════════════════════════════ COMPETITIVE MATRIX ════════ -->
+<div class="section">
+  <div class="section-label">Why Choose Fabulaa 2.0</div>
+  <div class="section-title">Competitive <span>Differentiation</span></div>
+  <p class="section-desc">Fabulaa 2.0 will be the only AAC platform that is free, cross-platform, AI-powered, and globally accessible all at once.</p>
+
+  <div class="matrix-wrap">
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th class="fabulaa">⭐ Fabulaa 2.0</th>
+          <th class="comp">Proloquo2Go</th>
+          <th class="comp">TD Snap</th>
+          <th class="comp">CoughDrop</th>
+          <th class="comp">LetMeTalk</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Free Core AAC</td><td class="badge-yes fabulaa-col">✅ Always Free</td><td class="badge-no">❌ $249</td><td class="badge-no">❌ $25/mo</td><td class="badge-no">❌ $15/mo</td><td class="badge-yes">✅</td></tr>
+        <tr><td>Android + iOS</td><td class="badge-yes fabulaa-col">✅ Both</td><td class="badge-no">❌ iOS only</td><td class="badge-no">❌ iOS only</td><td class="badge-yes">✅</td><td class="badge-yes">✅</td></tr>
+        <tr><td>AI Sentence Builder</td><td class="badge-yes fabulaa-col">✅ Gemini AI</td><td class="badge-no">❌</td><td class="badge-no">❌</td><td class="badge-no">❌</td><td class="badge-no">❌</td></tr>
+        <tr><td>10,000+ Symbols (Free)</td><td class="badge-yes fabulaa-col">✅</td><td class="badge-no">❌ Paid only</td><td class="badge-no">❌ Paid only</td><td class="badge-no">❌ Paid only</td><td class="badge-yes">✅</td></tr>
+        <tr><td>Arabic / South Asian Languages</td><td class="badge-yes fabulaa-col">✅ Priority</td><td class="badge-no">❌</td><td class="badge-no">❌</td><td class="badge-no">❌</td><td class="badge-warn">⚠️ Limited</td></tr>
+        <tr><td>Medical Emergency Board</td><td class="badge-yes fabulaa-col">✅ Built-in</td><td class="badge-no">❌</td><td class="badge-no">❌</td><td class="badge-no">❌</td><td class="badge-no">❌</td></tr>
+        <tr><td>Visual Story Builder</td><td class="badge-yes fabulaa-col">✅</td><td class="badge-no">❌</td><td class="badge-no">❌</td><td class="badge-no">❌</td><td class="badge-no">❌</td></tr>
+        <tr><td>Voice Banking (Free)</td><td class="badge-yes fabulaa-col">✅</td><td class="badge-no">❌</td><td class="badge-no">❌</td><td class="badge-no">❌</td><td class="badge-no">❌</td></tr>
+        <tr><td>Communication Partner Mode</td><td class="badge-yes fabulaa-col">✅</td><td class="badge-no">❌</td><td class="badge-no">❌</td><td class="badge-no">❌</td><td class="badge-no">❌</td></tr>
+        <tr><td>Family Web Portal (Free)</td><td class="badge-yes fabulaa-col">✅</td><td class="badge-no">❌</td><td class="badge-no">❌</td><td class="badge-warn">⚠️ Paid</td><td class="badge-no">❌</td></tr>
+        <tr><td>Gamified Learning Mode</td><td class="badge-yes fabulaa-col">✅ Free</td><td class="badge-warn">⚠️ Separate paid app</td><td class="badge-no">❌</td><td class="badge-no">❌</td><td class="badge-no">❌</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- ══════════════════════════════════ TECH STACK ══════════════ -->
+<div class="section">
+  <div class="section-label">Technology</div>
+  <div class="section-title">Recommended <span>Tech Stack</span></div>
+  <p class="section-desc">Modern, cost-effective, and scalable technologies — chosen to maximize development speed, minimize cost, and ensure long-term maintainability.</p>
+
+  <div class="card" style="margin-bottom:20px;">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:12px;color:#0f172a;">📱 Mobile Apps (iOS + Android)</h4>
+    <div class="tech-grid">
+      <div class="tech-pill"><span class="dot" style="background:#54c5f8;"></span>Flutter (Single codebase)</div>
+      <div class="tech-pill"><span class="dot" style="background:#2196F3;"></span>Riverpod State Management</div>
+      <div class="tech-pill"><span class="dot" style="background:#4CAF50;"></span>SQLite (Offline storage)</div>
+      <div class="tech-pill"><span class="dot" style="background:#4285F4;"></span>Google Cloud TTS</div>
+      <div class="tech-pill"><span class="dot" style="background:#1565c0;"></span>Google ML Kit (On-device AI)</div>
+      <div class="tech-pill"><span class="dot" style="background:#00897B;"></span>Gemini API (Cloud AI)</div>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:20px;">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:12px;color:#0f172a;">⚙️ Backend & Database</h4>
+    <div class="tech-grid">
+      <div class="tech-pill"><span class="dot" style="background:#FF9800;"></span>Firebase (Auth + Firestore)</div>
+      <div class="tech-pill"><span class="dot" style="background:#4CAF50;"></span>Cloudflare R2 (Image CDN)</div>
+      <div class="tech-pill"><span class="dot" style="background:#3B82F6;"></span>Node.js + Express API</div>
+      <div class="tech-pill"><span class="dot" style="background:#F59E0B;"></span>Firebase Analytics</div>
+    </div>
+  </div>
+  <div class="card">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:12px;color:#0f172a;">🌐 Web Portal (Family/Therapist Dashboard)</h4>
+    <div class="tech-grid">
+      <div class="tech-pill"><span class="dot" style="background:#61DAFB;"></span>React + Next.js</div>
+      <div class="tech-pill"><span class="dot" style="background:#38BDF8;"></span>Tailwind CSS</div>
+      <div class="tech-pill"><span class="dot" style="background:#22C55E;"></span>Recharts (Progress Charts)</div>
+      <div class="tech-pill"><span class="dot" style="background:#6366F1;"></span>ARASAAC Open Symbol API</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- ════════════════════════════════ OPEN QUESTIONS ════════════ -->
+<div class="section">
+  <div class="section-label">Next Steps</div>
+  <div class="section-title">Open <span>Questions</span></div>
+  <p class="section-desc">To finalise the development plan and begin execution, we need your input on the following key decisions.</p>
+
+  <div class="questions-grid">
+    <div class="q-card"><div class="q-num">1</div><p><strong>Primary Target User</strong> — Children with autism? Adults with ALS or stroke? Hearing impaired users? Each group has different UI needs and will influence the design direction.</p></div>
+    <div class="q-card"><div class="q-num">2</div><p><strong>Priority Regions & Markets</strong> — Which countries or regions should we prioritise? This determines which languages get built first and which symbol cultural contexts matter most.</p></div>
+    <div class="q-card"><div class="q-num">3</div><p><strong>Development Approach</strong> — Build internally with a dedicated team, or work with an outsourced development partner? This affects the timeline and tech stack choice.</p></div>
+    <div class="q-card"><div class="q-num">4</div><p><strong>Existing User Migration</strong> — Is there an existing user database from the current Fabulaa app that needs to be migrated to the new platform?</p></div>
+    <div class="q-card"><div class="q-num">5</div><p><strong>Budget for Phase 1</strong> — What is the available development budget for the first 4 months? This determines the size and structure of the initial development team.</p></div>
+    <div class="q-card"><div class="q-num">6</div><p><strong>Brand Decision</strong> — Should the current app be updated gradually, or is this a brand-new release under "Fabulaa 2.0" with a fresh launch strategy?</p></div>
+    <div class="q-card"><div class="q-num">7</div><p><strong>Monetisation Priority</strong> — Is the primary goal revenue sustainability (Pro subscribers first) or maximum impact (free user growth first)?</p></div>
+    <div class="q-card"><div class="q-num">8</div><p><strong>Clinical Advisors</strong> — Are there Speech-Language Pathologists (SLPs) or occupational therapists available to consult during the design and testing phases?</p></div>
+    <div class="q-card"><div class="q-num">9</div><p><strong>Symbol Library License</strong> — ARASAAC is free for non-commercial use. A commercial license may be needed. Is the client open to this arrangement?</p></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════ CTA / CLOSING ════════ -->
+<div class="cta-bar">
+  <h2>Ready to Give Everyone a Voice? 🗣️</h2>
+  <p>Fabulaa 2.0 has the potential to become the most impactful AAC platform in the world — and the only one that puts accessibility truly first. Let's build it together.</p>
+  <a href="mailto:hello@fabulaa.app" class="cta-btn">📧 Let's Discuss Next Steps</a>
+</div>
+
+<div class="footer-info">
+  <p>Fabulaa 2.0 Product Proposal &nbsp;|&nbsp; Prepared September 2026 &nbsp;|&nbsp; Confidential &nbsp;|&nbsp; All rights reserved.</p>
+  <p style="margin-top:6px;">Research sources: Fabulaa.app · AssistiveWare.com · TobiiDynavox.com · SpeechandLanguageKids.com · CoughDrop · LetMeTalk · ARASAAC</p>
+</div>
+
+</div><!-- /page -->
+</body>
+</html>
